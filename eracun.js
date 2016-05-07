@@ -154,7 +154,11 @@ var strankaZId = function(strankaId, callback) {
     pb.all("SELECT Customer.* FROM Customer, Invoice \
             WHERE Customer.CustomerId = " + strankaId,
     function(napaka, vrstice) {
-      console.log(vrstice);
+      if(napaka){
+        callback(false);
+      } else {
+        callback(vrstice);
+      }
     })
 }
 
@@ -255,7 +259,7 @@ streznik.post('/stranka', function(zahteva, odgovor) {
 
 // Odjava stranke
 streznik.post('/odjava', function(zahteva, odgovor) {
-    zahteva.session.stranka = null;
+    zahteva.session.destroy();
     odgovor.redirect('/prijava');
 })
 
